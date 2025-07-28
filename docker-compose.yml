@@ -1,0 +1,18 @@
+# 使用 Docker Compose 3.8 版本语法
+version: '3.8'
+
+services:
+  # 定义我们的应用服务，可以任意命名，这里叫 app
+  app:
+    # 指示 Docker Compose 使用当前目录下的 Dockerfile 来构建镜像
+    build: .
+    # 将主机的 8501 端口映射到容器的 8501 端口
+    # 这样你就可以通过在浏览器访问 http://localhost:8501 来查看你的应用
+    ports:
+      - "8501:8501"
+    # 设置卷 (volumes)，这是本地开发的关键
+    # 它将你本地的源代码和数据目录实时同步到容器内部对应的目录
+    # 意味着你在本地修改代码，无需重启容器就能立即看到变化（Streamlit会自动刷新）
+    volumes:
+      - ./aura_phor:/app/aura_phor
+      - ./data:/app/data

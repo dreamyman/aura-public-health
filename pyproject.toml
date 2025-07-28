@@ -1,0 +1,27 @@
+[project]
+name = "aura-public-health"
+version = "0.1.0"
+description = "Aura公共卫生洞察平台"
+authors = [
+    {name = "pierceliu",email = "wysd@qq.com"}
+]
+license = {text = "AGPL-3.0"}
+readme = "README.md"
+packages = [{include = "aura_phor"}]
+
+[tool.poetry.dependencies]
+requires-python = ">=3.13"
+dependencies = [
+    "streamlit (>=1.47.1,<2.0.0)",
+    "pandas (>=2.3.1,<3.0.0)",
+    "numpy (>=2.3.2,<3.0.0)",
+    "geopandas (>=1.1.1,<2.0.0)",
+    "plotly (>=6.2.0,<7.0.0)",
+    "networkx (>=3.5,<4.0)",
+    "pyvis (>=0.3.2,<0.4.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

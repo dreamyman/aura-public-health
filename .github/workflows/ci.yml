@@ -1,0 +1,53 @@
+# 工作流名称
+name: Aura CI Pipeline
+
+# 触发条件：当向 main 分支 push 或发起 pull request 时触发
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 定义工作任务
+jobs:
+  # 任务ID，可以任意命名
+  build-and-test:
+    # 运行环境：使用最新的 Ubuntu 系统
+    runs-on: ubuntu-latest
+
+    # 步骤
+    steps:
+      # 步骤1: 检出代码
+      # 拉取你的仓库代码到 Actions 运行器中
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步骤2: 设置 Python 环境
+      # 使用官方的 action 来设置指定版本的 Python
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 步骤3: 安装 Poetry
+      # 为了与本地环境一致，这里也使用 Poetry
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 2.1.3 # 建议指定一个版本以保证一致性
+
+      # 步骤4: 安装项目依赖
+      # --verbose: 输出更详细的日志，便于调试
+      # poetry install 会自动安装开发依赖 (如 pytest, ruff)
+      - name: Install dependencies
+        run: poetry install --verbose
+
+      # 步骤5: 使用 Ruff 进行代码规范检查和格式化检查
+      # Ruff 是一个极快的 Python Linter，集成了 flake8, isort, black 等多种工具的功能
+      - name: Lint with Ruff
+        run: poetry run ruff check . && poetry run ruff format --check .
+
+      # 步骤6: 运行单元测试
+      # 使用 pytest 运行 tests/ 目录下的所有测试
+      - name: Run tests
+        run: poetry run pytest
